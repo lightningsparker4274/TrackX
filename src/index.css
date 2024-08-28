@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-repeat: no-repeat;
+    background: #c6ffdd;
+        /* fallback for old browsers */
+        background: -webkit-linear-gradient(to bottom right, #cdffe1, #ffe6ad, #e4a5ff);
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to bottom right, #d0ffe3, #ffeab8, rgb(246, 223, 255));
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+
+input[type=date],input[type=number], input[type=text], input[type=selectf]{
+    outline: none;
+}
+
+
