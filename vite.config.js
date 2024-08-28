@@ -7,4 +7,7 @@ export default defineConfig({
   build: {
     outDir: 'build', // Make sure this matches the directory Render expects
   },
+   server: {
+    historyApiFallback: true,
+  },
 })
