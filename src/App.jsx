@@ -16,7 +16,6 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check if user is authenticated
     localforage.getItem("user").then((user) => {
       if (user) {
         setIsAuthenticated(true);
@@ -25,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <div className=" font-base">
+    <div className="font-base">
       <Router>
         <Routes>
           <Route
@@ -68,10 +67,19 @@ function App() {
               )
             }
           />
-
-          <Route path="/store" element={<StoredData />} />
-
-          <Route path="/files" element={<EditPage />} />
+          {/* Protect additional routes */}
+          <Route
+            path="/store"
+            element={
+              isAuthenticated ? <StoredData /> : <Navigate to="/login" replace />
+            }
+          />
+          <Route
+            path="/files"
+            element={
+              isAuthenticated ? <EditPage /> : <Navigate to="/login" replace />
+            }
+          />
         </Routes>
       </Router>
     </div>
