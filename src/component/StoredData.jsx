@@ -16,6 +16,7 @@ function StorePage() {
       .then((data) => {
         if (Array.isArray(data)) {
           setDataList(data);
+          console.log(data);
         } else {
           console.error("Retrieved dataList is not an array:", data);
           setDataList([]);
@@ -31,10 +32,10 @@ function StorePage() {
     var isok = prompt("type ok delete...");
     console.log(isok);
     if (isok) {
-    const updatedDataList = dataList.filter((_, i) => i !== index);
-    setDataList(updatedDataList);
-    localforage.setItem("dataList", updatedDataList);
-    toast.success("Data Deleted Successfully", {
+      const updatedDataList = dataList.filter((_, i) => i !== index);
+      setDataList(updatedDataList);
+      localforage.setItem("dataList", updatedDataList);
+      toast.success("Data Deleted Successfully", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -93,7 +94,7 @@ function StorePage() {
             item.endDate &&
             isValidDate(item.startDate) &&
             isValidDate(item.endDate)
-              ? calculateWorkingDays(item.startDate, item.endDate)
+              ? calculateWorkingDays(item.startDate, item.endDate, item.isSat)
               : "N/A";
 
           return (
@@ -107,6 +108,7 @@ function StorePage() {
                 <strong>Start Date:</strong> {item.startDate || "N/A"}
                 <strong>End Date:</strong> {item.endDate || "N/A"}
                 <strong>Total Time:</strong> {item.totalTime || 0}
+                <strong>Sat work:</strong> {item.isSat ? "Yes" : "No"}
                 <strong>Total Days:</strong> <span>{totalDays}</span>
               </div>
               <div className="items-center justify-between mt-4 sm:mt-0 sm:flex-row sm:mx-auto">
@@ -133,7 +135,7 @@ function StorePage() {
 
 export default StorePage;
 
-function calculateWorkingDays(startDate, endDate) {
+function calculateWorkingDays(startDate, endDate, isSat) {
   const start = new Date(startDate);
   const end = new Date(endDate);
   let count = 0;
@@ -141,7 +143,14 @@ function calculateWorkingDays(startDate, endDate) {
 
   while (currentDate <= end) {
     const day = currentDate.getDay();
-    if (day !== 0 && day !== 6) count++;
+    //if (day !== 0 && day !== 6 && !isSat) count++;
+    if (day !== 0 && day !== 6) {
+      // Case where the day is neither Sunday (0) nor Saturday (6)
+      count++;
+    } else if (day === 6 && isSat) {
+      // Case where the day is Saturday (6) and isSat is true
+      count++;
+    }
     currentDate.setDate(currentDate.getDate() + 1);
   }
   return count;
