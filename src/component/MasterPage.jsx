@@ -125,7 +125,7 @@ function MasterPage() {
               className="w-full p-2 border rounded"
             />
           </div>
-          <div className="flex items-center justify-between w-52 mb-4">
+          <div className="flex items-center justify-between w-56 mb-4">
             <input type="checkbox" onChange={handleInputChange} name="isSat" id="" value={formData.isSat} />
             <label className="block mt-1 mb-2 text-gray-700">Are you work on Saturday?</label>
           </div>
