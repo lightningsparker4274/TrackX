@@ -14,6 +14,7 @@ function MasterPage() {
     name: "",
     startDate: "",
     endDate: "",
+    isSat:"",
     totaltime: "",
   });
 
@@ -27,20 +28,30 @@ function MasterPage() {
   }, []);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, type, checked, value } = e.target;
+
+    if (type === "checkbox") {
+      // Handle checkbox input
+      setFormData({
+        ...formData,
+        [name]: checked,
+      });
+    } else {
+      // Handle other input types (text, number, etc.)
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedDataList = [...dataList, formData];
     setDataList(updatedDataList);
 
-    localforage.setItem("dataList", updatedDataList).then(() =>
-    {
+    localforage.setItem("dataList", updatedDataList).then(() => {
       // Show success toast after data is stored
       toast.success("Data Added Successfully", {
         position: "top-right",
@@ -58,6 +69,7 @@ function MasterPage() {
       name: "",
       startDate: "",
       endDate: "",
+      isSat:"",
       totaltime: "",
     });
   };
@@ -67,13 +79,13 @@ function MasterPage() {
   };
 
   return (
-    <div className="items-center h-screen p-4 lg:mx-[64px] lg:justify-center lg:flex">
+    <div className="items-center h-screen p-4 lg:mx-[71px] lg:justify-center lg:flex">
       <img
         src="tm.png"
         alt=""
         className="mt-3 rounded-t-xl lg:rounded-l-xl lg:rounded-tr-sm lg:h-[489px] w-[750px]"
       />
-      <div className="max-w-md p-5 mx-auto text-white bg-white border rounded-b-lg shadow-md lg:rounded-r-xl lg:mt-3 lg:rounded-tl-sm lg:rounded-bl-sm">
+      <div className="max-w-md p-3 mx-auto text-white bg-white border rounded-b-lg shadow-md lg:rounded-r-xl lg:mt-3 lg:rounded-tl-sm lg:rounded-bl-sm">
         <h2 className="mb-4 text-2xl font-bold text-center text-gray-800 mx-[60px]">
           TrackX Task Manager
         </h2>
@@ -113,8 +125,11 @@ function MasterPage() {
               className="w-full p-2 border rounded"
             />
           </div>
+          <div className="flex items-center justify-between w-48 mb-4">
+            <input type="checkbox" onChange={handleInputChange} name="isSat" id="" value={formData.isSat} />
+            <label className="block mt-1 mb-2 text-gray-700">Are you work on Saturday?</label>
+          </div>
           <div className="mb-4">
-            <label className="block mb-2 text-gray-700">Time Taken:</label>
             <input
               readOnly
               placeholder="Its is Read Only..."
