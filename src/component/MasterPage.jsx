@@ -81,6 +81,7 @@ function MasterPage() {
           <div className="mb-4">
             <label className="block mb-2 text-gray-700">File Name:</label>
             <input
+              required
               type="text"
               name="name"
               value={formData.name}
@@ -92,6 +93,7 @@ function MasterPage() {
           <div className="mb-4">
             <label className="block mb-2 text-gray-700">Start Date:</label>
             <input
+              required
               type="date"
               name="startDate"
               value={formData.startDate}
@@ -103,6 +105,7 @@ function MasterPage() {
           <div className="mb-4">
             <label className="block mb-2 text-gray-700">End Date:</label>
             <input
+              required
               type="date"
               name="endDate"
               value={formData.endDate}
@@ -114,6 +117,7 @@ function MasterPage() {
             <label className="block mb-2 text-gray-700">Time Taken:</label>
             <input
               readOnly
+              placeholder="Its is Read Only..."
               type="number"
               name="totaltime"
               value={formData.totaltime || 0}
