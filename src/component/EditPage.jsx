@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import localforage from "localforage";
-import CustomTimePicker from "./CustomTimePicker"; // Import the custom time picker
 
 function EditPage() {
   const location = useLocation();
@@ -13,13 +12,13 @@ function EditPage() {
   const [dates, setDates] = useState([]);
   const [savedTimes, setSavedTimes] = useState([]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (Array.isArray(dataList)) {
       console.log("DataList is an array:", dataList);
     } else {
       console.error("DataList is not an array:", dataList);
     }
-  }, [dataList]);
+  }, [dataList]); */
 
   useEffect(() => {
     if (!data) return;
@@ -28,8 +27,9 @@ function EditPage() {
       JSON.parse(localStorage.getItem(`timeEntries_${index}`)) || [];
 
     if (getData.length > 0) {
-      console.log("getData: ", getData);
+      //console.log("getData: ", getData);
       setSavedTimes(getData);
+      setTimeEntries(getData);
     } else {
       setSavedTimes(
         dates.map((date) => ({ date: date.date, startTime: "", endTime: "" }))
@@ -37,12 +37,13 @@ function EditPage() {
     }
   }, [data, index, dates]);
 
-
-  
-
   useEffect(() => {
     if (data && data.startDate && data.endDate) {
-      const workingDays = calculateWorkingDays(data.startDate, data.endDate, data.isSat);
+      const workingDays = calculateWorkingDays(
+        data.startDate,
+        data.endDate,
+        data.isSat
+      );
       setTimeEntries(
         new Array(workingDays).fill(null).map(() => ({
           startTime: "",
@@ -59,9 +60,9 @@ function EditPage() {
         const dayName = currentDate.toLocaleDateString("en-US", {
           weekday: "long",
         });
-        const dateStr = currentDate.toLocaleDateString("en-US", {
-          month: "2-digit",
+        const dateStr = currentDate.toLocaleDateString("en-GB", {
           day: "2-digit",
+          month: "2-digit",
           year: "numeric",
         });
         generatedDates.push({ date: dateStr, day: dayName });
@@ -80,13 +81,6 @@ function EditPage() {
     calculateTotalTime(timeEntries);
   }, [timeEntries]);
 
-
-  useEffect(() => {
-    console.log("timeEntries:", timeEntries);
-    console.log("savedTimes:", savedTimes);
-    console.log("totalTime:", totalTime);
-  }, [timeEntries, savedTimes, totalTime]);
-
   const handleInputChange = (value, dayIndex, field) => {
     const updatedEntries = [...timeEntries];
     updatedEntries[dayIndex][field] = value;
@@ -104,51 +98,30 @@ function EditPage() {
     calculateTotalTime(updatedEntries);
   };
 
-
-  useEffect(() => {
-    console.log("Saved Times:", savedTimes);
-  }, [savedTimes]);
-
-
-  /* const calculateTotalTime = (entries) => {
-    let totalMinutes = 0;
-
-    entries.forEach(({ startTime, endTime, extraTime }) => {
-      if (startTime && endTime) {
-        const [startHours, startMinutes, startPeriod] = parseTime(startTime);
-        const [endHours, endMinutes, endPeriod] = parseTime(endTime);
-
-        const start24Hour = convertTo24Hour(startHours, startPeriod);
-        const end24Hour = convertTo24Hour(endHours, endPeriod);
-
-        const startMinutesFromMidnight = start24Hour * 60 + startMinutes;
-        const endMinutesFromMidnight = end24Hour * 60 + endMinutes;
-
-        let diff;
-        if (endMinutesFromMidnight >= startMinutesFromMidnight) {
-          diff = endMinutesFromMidnight - startMinutesFromMidnight;
-        } else {
-          diff = 1440 - startMinutesFromMidnight + endMinutesFromMidnight;
-        }
-
-        totalMinutes += diff - (extraTime || 0);
-      }
-  }); */
-  
-  
   const calculateTotalTime = (entries) => {
     let totalMinutes = 0;
 
     entries.forEach(({ startTime, endTime, extraTime }) => {
       if (startTime && endTime) {
+        //console.log(`Start Time: ${startTime}, End Time: ${endTime}`);
+
+        // Parse times
         const [startHours, startMinutes, startPeriod] = parseTime(startTime);
         const [endHours, endMinutes, endPeriod] = parseTime(endTime);
 
+        //console.log(`Parsed Start Time: ${startHours}:${startMinutes} ${startPeriod}`);
+        //console.log(`Parsed End Time: ${endHours}:${endMinutes} ${endPeriod}`);
+
+        // Convert to 24-hour format
         const start24Hour = convertTo24Hour(startHours, startPeriod);
         const end24Hour = convertTo24Hour(endHours, endPeriod);
 
+        //console.log(`Start in 24-Hour: ${start24Hour}, End in 24-Hour: ${end24Hour}` );
+
         const startMinutesFromMidnight = start24Hour * 60 + startMinutes;
         const endMinutesFromMidnight = end24Hour * 60 + endMinutes;
+
+        //console.log(`Minutes from Midnight (Start): ${startMinutesFromMidnight}, (End): ${endMinutesFromMidnight}` );
 
         let diff;
         if (endMinutesFromMidnight >= startMinutesFromMidnight) {
@@ -157,45 +130,39 @@ function EditPage() {
           diff = 1440 - startMinutesFromMidnight + endMinutesFromMidnight;
         }
 
-        totalMinutes += diff - extraTime;
+        //console.log(`Difference in Minutes: ${diff}`);
+
+        // Adjust total minutes
+        totalMinutes += diff - (parseInt(extraTime, 10) || 0);
+        //console.log(`Total Minutes After Adjustment: ${totalMinutes}`);
       }
     });
 
-    // Convert previously saved total time to minutes
-    let savedTotalMinutes = 0;
-    if (formData.totalTime) {
-      const [savedHours, savedMinutes] = formData.totalTime
-        .split(" ")
-        .map((e) => parseInt(e, 10) || 0);
-      savedTotalMinutes = (savedHours || 0) * 60 + (savedMinutes || 0);
-    }
-
-    totalMinutes += savedTotalMinutes;
-
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
+    //console.log(`Total Time: ${hours} hr ${minutes} min`);
     setTotalTime(`${hours} hr ${minutes} min`);
   };
-  
 
   const convertTo24Hour = (hours, period) => {
-    if (period.toLowerCase() === "pm" && hours < 12) {
-      return hours + 12;
-    } else if (period.toLowerCase() === "am" && hours === 12) {
-      return 0;
+    if (period === "PM" && hours !== 12) {
+      return hours + 12; // Convert PM hours, except 12 PM, to 24-hour format
     }
-    return hours;
+    if (period === "AM" && hours === 12) {
+      return 0; // Convert 12 AM to 0 hours (midnight)
+    }
+    return hours; // Otherwise, return hours as is (AM times are correct already)
   };
 
-  const parseTime = (time) => {
-    if (!time) return [0, 0, "AM"];
-    const [timePart, period] = time.split(" ");
-    const [hours, minutes] = timePart.split(":").map(Number);
+  const parseTime = (timeString) => {
+    // Example timeString: "02:30 PM"
+    const [time, period] = timeString.split(" "); // Split by space to separate the period (AM/PM)
+    const [hours, minutes] = time.split(":").map(Number); // Split time by ':' and convert to numbers
     return [hours, minutes, period];
   };
 
   const handleSave = () => {
-    console.log("Saving data...");
+    //console.log("Saving data...");
 
     if (index === undefined || index < 0) {
       console.error("Index is undefined or invalid.");
@@ -236,7 +203,7 @@ function EditPage() {
 
   const handleback = () => {
     navigate("/store");
-  }
+  };
 
   return (
     <div className="h-full max-w-md p-5 mx-auto text-white bg-white border rounded-md shadow-md lg:mt-10 bg-gradient-to-br from-sky-200 via-violet-100 to-purple-200">
@@ -283,104 +250,155 @@ function EditPage() {
         </div>
 
         <div className="mb-4">
-          <h4 className="my-4 text-xl font-semibold text-center decoration-double font-abel">
-            Time Entries:
-          </h4>
-          {timeEntries.map((entry, index) => (
+          <label className="block mb-2 text-gray-700">
+            Include Saturday:
+            <input
+              type="checkbox"
+              name="isSat"
+              checked={formData.isSat || false}
+              onChange={(e) =>
+                setFormData({ ...formData, isSat: e.target.checked })
+              }
+              className="ml-2"
+            />
+          </label>
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-2 text-gray-700">Description</label>
+          <textarea
+            rows={4}
+            cols={51}
+            name="description"
+            value={formData.description || ""}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+            className="w-full p-2 border rounded outline-none focus:ring-2"
+          />
+        </div>
+        <p className="text-2xl font-semibold text-center underline decoration-double">
+          Time Entries
+        </p>
+        <div>
+          {dates.map((day, index) => (
             <div
               key={index}
-              className="p-2 mb-4 space-y-4 border-2 border-white rounded-lg shadow-lg"
+              className="p-3 mb-4 bg-white border rounded-md shadow-md"
             >
-              <p className="flex justify-between mx-3">
-                {dates[index]?.date} {dates[index]?.day}
-              </p>
-              <div className="flex items-center mb-2 space-x-2">
-                <label className="block text-gray-700">Start Time:</label>
-                <div className="flex">
-                  <CustomTimePicker
-                    value={savedTimes[index]?.startTime || ""}
-                    onChange={(value) =>
-                      handleInputChange(value, index, "startTime")
-                    }
-                  />
-                </div>
+              <div className="flex flex-col">
+                <p className="font-bold">{day.date}</p>
+                <p>{day.day}</p>
               </div>
-
-              <div className="flex items-center mb-2 space-x-2">
-                <label className="block text-gray-700">End Time:</label>
-                <div className="flex-1">
-                  <CustomTimePicker
-                    value={savedTimes[index]?.endTime || ""}
-                    onChange={(value) =>
-                      handleInputChange(value, index, "endTime")
-                    }
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center mb-2 space-x-2">
-                <label className="block text-gray-700">
-                  Extra Time (Minutes):
-                </label>
+              <div>
+                <label className="block mt-2 text-gray-700">Start Time</label>
                 <input
-                  type="text"
-                  value={entry.extraTime}
+                  type="time"
+                  value={timeEntries[index]?.startTime}
                   onChange={(e) =>
-                    handleInputChange(
-                      parseInt(e.target.value, 10) || 0,
-                      index,
-                      "extraTime"
-                    )
+                    handleInputChange(e.target.value, index, "startTime")
                   }
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 mt-1 border rounded outline-none focus:ring-2"
+                />
+              </div>
+              <div>
+                <label className="block mt-2 text-gray-700">End Time</label>
+                <input
+                  type="time"
+                  value={timeEntries[index]?.endTime}
+                  onChange={(e) =>
+                    handleInputChange(e.target.value, index, "endTime")
+                  }
+                  className="w-full p-2 mt-1 border rounded outline-none focus:ring-2"
+                />
+              </div>
+              <div>
+                <label className="block mt-2 text-gray-700">Extra Time</label>
+                <input
+                  type="number"
+                  value={timeEntries[index]?.extraTime}
+                  onChange={(e) =>
+                    handleInputChange(e.target.value, index, "extraTime")
+                  }
+                  className="w-full p-2 mt-1 border rounded outline-none focus:ring-2"
                 />
               </div>
             </div>
           ))}
         </div>
 
-        <div className="flex items-center justify-between mb-4">
-          <h4 className="text-2xl font-bold">Total Time:</h4>
-          <p className="text-xl">{totalTime}</p>
-          {/* <input type="text" readOnly value={formData.totalTime} /> */}
+        <div className="flex items-center justify-between mb-4 card example-2">
+          <div className="inner">
+            <h4 className="text-2xl font-bold text-black">Total Time:</h4>
+            <p className="px-5 py-2 text-2xl font-semibold text-white bg-black rounded-md">
+              {totalTime}
+            </p>
+          </div>
         </div>
 
         <div className="mt-6">
-          <h4 className="text-xl font-semibold text-black">Saved Times:</h4>
-          <div className="space-y-2">
-            {savedTimes.map((entry, index) => (
-              <div
-                key={index}
-                className="p-2 mb-2 text-black bg-gray-100 border rounded-md"
-              >
-                <p>
-                  <strong>Date:</strong> {dates[index]?.date} (
-                  {dates[index]?.day})
-                </p>
-                <p>
-                  <strong>Start Time:</strong> {entry.startTime || "Not Set"}
-                </p>
-                <p>
-                  <strong>End Time:</strong> {entry.endTime || "Not Set"}
-                </p>
-              </div>
-            ))}
+          <h4 className="mb-5 text-2xl font-semibold text-center text-black underline decoration-double">
+            Saved Times:
+          </h4>
+          <div className="p-4 space-y-2 bg-white rounded-lg">
+            {savedTimes.map((entry, index) => {
+              const isSunday = dates[index]?.day === "Sunday";
+              const isSaturday = dates[index]?.day === "Saturday";
+
+              // Skip Sundays entirely
+              if (isSunday) {
+                return null;
+              }
+
+              // Show Saturday details only if isSat is true
+              if (isSaturday && data.isSat == false) {
+                return null;
+              }
+
+              return (
+                <div key={index} className="flex p-2 mb-2 text-black">
+                  <div>
+                    <p className="text-xl font-semibold">Date:</p>
+                    <p className="text-xl font-semibold">Start Time:</p>
+                    <p className="text-xl font-semibold">End Time:</p>
+                    <br />
+                    <hr className="font-bold" />
+                  </div>
+
+                  <div className="">
+                    <p className="text-xl indent-5">
+                      {dates[index]?.date} ({dates[index]?.day})
+                    </p>
+                    <p className="text-xl indent-5">
+                      {" "}
+                      {savedTimes[index]?.startTime || "Not Set"}
+                    </p>
+                    <p className="text-xl indent-5">
+                      {savedTimes[index]?.endTime || "Not Set"}
+                    </p>
+                    <br />
+                    <hr />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={handleback}
-            className="py-2 text-white bg-blue-500 rounded-lg px-7 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-          >
-            Back
-          </button>
+
+        <div className="flex justify-between pt-2 space-x-2">
           <button
             type="button"
             onClick={handleSave}
-            className="py-2 text-white bg-blue-500 rounded-lg px-7 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            className="px-8 py-2 font-semibold text-white bg-green-500 rounded-md hover:bg-blue-600"
           >
             Save
+          </button>
+          <button
+            type="button"
+            onClick={handleback}
+            className="px-8 py-2 font-semibold text-white bg-black rounded-md hover:bg-gray-200"
+          >
+            Back
           </button>
         </div>
       </form>
@@ -408,4 +426,5 @@ function calculateWorkingDays(startDate, endDate, isSat) {
   }
   return count;
 }
+
 export default EditPage;
