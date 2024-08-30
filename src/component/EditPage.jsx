@@ -356,7 +356,7 @@ function EditPage() {
               }
 
               return (
-                <div key={index} className="flex p-2 mb-2 text-black">
+                <div key={index} className="flex p-2 mx-2 mb-2 text-black">
                   <div>
                     <p className="text-lg font-semibold">Date:</p>
                     <p className="text-lg font-semibold">Start Time:</p>
@@ -366,14 +366,14 @@ function EditPage() {
                   </div>
 
                   <div className="">
-                    <p className="text-lg indent-5">
+                    <p className="text-md indent-3">
                       {dates[index]?.date} ({dates[index]?.day})
                     </p>
-                    <p className="text-lg indent-5">
+                    <p className="text-md indent-5">
                       {" "}
                       {savedTimes[index]?.startTime || "Not Set"}
                     </p>
-                    <p className="text-lg indent-5">
+                    <p className="text-md indent-5">
                       {savedTimes[index]?.endTime || "Not Set"}
                     </p>
                     <br />
