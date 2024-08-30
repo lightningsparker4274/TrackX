@@ -103,8 +103,8 @@ function StorePage() {
               className="flex p-3 mb-4 bg-white border-2 rounded-lg shadow-lg hover:odd:border-green-300 hover:even:border-purple-300 hover: sm:flex-row"
             >
               <div className="grid grid-cols-2 gap-2">
-                <strong className="mr-1 text-lg">File Name:</strong>
-                <span className="text-xl font-bold">{item.name || "N/A"}</span>
+                <strong className="mr-1 text-lg">File:</strong>
+                <span className="text-lg">{item.name || "N/A"}</span>
                 <strong>Start Date:</strong> {item.startDate || "N/A"}
                 <strong>End Date:</strong> {item.endDate || "N/A"}
                 <strong>Total Time:</strong> {item.totalTime || 0}
