@@ -329,7 +329,7 @@ function EditPage() {
 
         <div className="flex items-center justify-between mb-4 card example-2">
           <div className="inner">
-            <h4 className="text-2xl font-bold text-black">Total Time:</h4>
+            <h4 className="text-2xl text-black">Total Time:</h4>
             <p className="px-5 py-2 text-2xl font-semibold text-white bg-black rounded-md">
               {totalTime}
             </p>
@@ -338,9 +338,9 @@ function EditPage() {
 
         <div className="mt-6">
           <h4 className="mb-5 text-2xl font-semibold text-center text-black underline decoration-double">
-            Saved Times:
+            #Saved Times:
           </h4>
-          <div className="p-4 space-y-2 bg-white rounded-lg">
+          <div className="p-2 space-y-2 bg-white rounded-lg">
             {savedTimes.map((entry, index) => {
               const isSunday = dates[index]?.day === "Sunday";
               const isSaturday = dates[index]?.day === "Saturday";
