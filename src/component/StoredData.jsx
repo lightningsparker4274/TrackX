@@ -16,7 +16,7 @@ function StorePage() {
       .then((data) => {
         if (Array.isArray(data)) {
           setDataList(data);
-          console.log(data);
+         //console.log(data);
         } else {
           console.error("Retrieved dataList is not an array:", data);
           setDataList([]);
@@ -30,7 +30,7 @@ function StorePage() {
 
   const handleDelete = (index) => {
     var isok = prompt("type ok delete...");
-    console.log(isok);
+    //console.log(isok);
     if (isok) {
       const updatedDataList = dataList.filter((_, i) => i !== index);
       setDataList(updatedDataList);
