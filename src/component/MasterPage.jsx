@@ -127,7 +127,7 @@ function MasterPage() {
               className="w-full p-2 border rounded focus:ring-2 focus: ring-sky-300"
             />
           </div>
-          <div className="flex items-center justify-between w-48 mb-4">
+          <div className="flex items-center justify-between w-60 mb-4">
             <input
               type="checkbox"
               onChange={handleInputChange}
