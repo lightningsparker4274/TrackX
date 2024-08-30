@@ -14,7 +14,8 @@ function MasterPage() {
     name: "",
     startDate: "",
     endDate: "",
-    isSat:"",
+    isSat: "",
+    description:"",
     totaltime: "",
   });
 
@@ -69,7 +70,8 @@ function MasterPage() {
       name: "",
       startDate: "",
       endDate: "",
-      isSat:"",
+      isSat: "",
+      description:"",
       totaltime: "",
     });
   };
@@ -83,9 +85,9 @@ function MasterPage() {
       <img
         src="tm.png"
         alt=""
-        className="mt-3 rounded-t-xl lg:rounded-l-xl lg:rounded-tr-sm lg:h-[489px] w-[750px]"
+        className="mt-3 rounded-t-xl lg:rounded-l-xl lg:rounded-tr-sm lg:h-[489px] lg:w-[750px]"
       />
-      <div className="max-w-md p-3 mx-auto text-white bg-white border rounded-b-lg shadow-md lg:rounded-r-xl lg:mt-3 lg:rounded-tl-sm lg:rounded-bl-sm">
+      <div className="max-w-md p-3 mx-auto text-white bg-white border rounded-b-lg shadow-md lg:rounded-r-xl lg:mt-3 lg:rounded-tl-sm lg:rounded-bl-sm lg:h-[490px] h-[550px] overflow-auto">
         <h2 className="mb-4 text-2xl font-bold text-center text-gray-800 mx-[60px]">
           TrackX Task Manager
         </h2>
@@ -98,7 +100,7 @@ function MasterPage() {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus: ring-sky-300"
             />
           </div>
 
@@ -110,7 +112,7 @@ function MasterPage() {
               name="startDate"
               value={formData.startDate}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus: ring-sky-300"
             />
           </div>
 
@@ -122,23 +124,30 @@ function MasterPage() {
               name="endDate"
               value={formData.endDate}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded focus:ring-2 focus: ring-sky-300"
             />
           </div>
-          <div className="flex items-center justify-between w-64 mb-4">
-            <input type="checkbox" onChange={handleInputChange} name="isSat" id="" value={formData.isSat} />
-            <label className="block mt-1 mb-2 text-gray-700">Are you work on Saturday?</label>
+          <div className="flex items-center justify-between w-48 mb-4">
+            <input
+              type="checkbox"
+              onChange={handleInputChange}
+              name="isSat"
+              id=""
+              value={formData.isSat}
+            />
+            <label className="block mt-1 mb-2 text-gray-700">
+              Are you work on Saturday?
+            </label>
           </div>
           <div className="mb-4">
-            <label className="block mb-2 text-gray-700">Total Time:</label>
-            <input
-              readOnly
-              placeholder="Its is Read Only..."
-              type="number"
-              name="totaltime"
-              value={formData.totaltime || 0}
+            <label className="block mb-2 text-gray-700">File Description</label>
+            <textarea
+              className="p-1 border border-gray-300 rounded-md focus:ring-2 focus: ring-sky-300"
+              rows={4}
+              cols={46}
+              value={formData.description}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded"
+              name="description"
             />
           </div>
           <div className="flex justify-between">
