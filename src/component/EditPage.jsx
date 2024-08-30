@@ -217,7 +217,7 @@ function EditPage() {
 
   return (
     <div className="h-full max-w-md p-5 mx-auto text-white bg-white border rounded-md shadow-md lg:mt-10 bg-gradient-to-br from-sky-200 via-violet-100 to-purple-200">
-      <p className="mb-4 text-2xl font-semibold text-black underline decoration-double">
+      <p className="mb-4 text-xl font-semibold text-black underline decoration-double">
         Edit File Details
       </p>
       <form className="space-y-4 text-black">
