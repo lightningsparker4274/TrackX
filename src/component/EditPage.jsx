@@ -366,28 +366,29 @@ function EditPage() {
               }
 
               return (
-                <div key={index} className="flex p-2 mx-2 mb-2 text-black">
-                  <div>
-                    <p className="text-lg font-semibold">Date:</p>
-                    <p className="text-lg font-semibold">Start Time:</p>
-                    <p className="text-lg font-semibold">End Time:</p>
-                    <br />
-                    <hr className="font-bold" />
-                  </div>
+                <div key={index} className="p-2 mx-2 mb-2 text-black ">
+                  <p className="text-2xl font-semibold text-center indent-3">
+                    {dates[index]?.date} ({dates[index]?.day})
+                  </p>
+                  <div className="flex">
+                    <div>
+                      <p className="text-lg font-semibold">Start Time:</p>
+                      <p className="text-lg font-semibold">End Time:</p>
+                      <br />
+                      <hr className="font-bold" />
+                    </div>
 
-                  <div className="">
-                    <p className="text-lg indent-3">
-                      {dates[index]?.date} ({dates[index]?.day})
-                    </p>
-                    <p className="text-lg indent-3">
-                      {" "}
-                      {savedTimes[index]?.startTime || "Not Set"}
-                    </p>
-                    <p className="text-lg indent-3">
-                      {savedTimes[index]?.endTime || "Not Set"}
-                    </p>
-                    <br />
-                    <hr />
+                    <div className="">
+                      <p className="text-lg indent-3">
+                        {" "}
+                        {savedTimes[index]?.startTime || "Not Set"}
+                      </p>
+                      <p className="text-lg indent-3">
+                        {savedTimes[index]?.endTime || "Not Set"}
+                      </p>
+                      <br />
+                      <hr />
+                    </div>
                   </div>
                 </div>
               );
