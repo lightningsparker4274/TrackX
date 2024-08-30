@@ -367,7 +367,7 @@ function EditPage() {
 
               return (
                 <div key={index} className="p-2 mx-2 mb-2 text-black ">
-                  <p className="text-2xl font-semibold text-center indent-3">
+                  <p className="text-lg font-semibold text-center indent-3">
                     {dates[index]?.date} ({dates[index]?.day})
                   </p>
                   <div className="flex">
