@@ -12,30 +12,36 @@ function EditPage() {
   const [dates, setDates] = useState([]);
   const [savedTimes, setSavedTimes] = useState([]);
 
-  /* useEffect(() => {
-    if (Array.isArray(dataList)) {
-      console.log("DataList is an array:", dataList);
-    } else {
-      console.error("DataList is not an array:", dataList);
-    }
-  }, [dataList]); */
 
   useEffect(() => {
-    if (!data) return;
-
-    const getData =
-      JSON.parse(localStorage.getItem(`timeEntries_${index}`)) || [];
-
-    if (getData.length > 0) {
-      //console.log("getData: ", getData);
-      setSavedTimes(getData);
-      setTimeEntries(getData);
-    } else {
-      setSavedTimes(
-        dates.map((date) => ({ date: date.date, startTime: "", endTime: "" }))
+    if (data) {
+      const getData =
+        JSON.parse(localStorage.getItem(`timeEntries_${index}`)) || [];
+      // Ensure timeEntries is initialized with the correct length
+      setTimeEntries(
+        dates.map(
+          (_, idx) =>
+            getData[idx] || { startTime: "", endTime: "", extraTime: "0" }
+        )
       );
+      if (getData.length !== dates.length) {
+        const adjustedSavedTimes = dates.map(
+          (date, idx) =>
+            getData[idx] || {
+              date: date.date,
+              startTime: "",
+              endTime: "",
+              extraTime: "0",
+            }
+        );
+        setSavedTimes(adjustedSavedTimes);
+      } else {
+        setSavedTimes(getData);
+      }
     }
   }, [data, index, dates]);
+
+
 
   useEffect(() => {
     if (data && data.startDate && data.endDate) {
@@ -44,17 +50,10 @@ function EditPage() {
         data.endDate,
         data.isSat
       );
-      setTimeEntries(
-        new Array(workingDays).fill(null).map(() => ({
-          startTime: "",
-          endTime: "",
-          extraTime: 0,
-        }))
-      );
-
       const generatedDates = [];
-      let currentDate = new Date(data.startDate);
       const savedTimesInit = [];
+
+      let currentDate = new Date(data.startDate);
 
       while (currentDate <= new Date(data.endDate)) {
         const dayName = currentDate.toLocaleDateString("en-US", {
@@ -65,63 +64,75 @@ function EditPage() {
           month: "2-digit",
           year: "numeric",
         });
-        generatedDates.push({ date: dateStr, day: dayName });
 
-        // Initialize saved times for each date
-        savedTimesInit.push({ date: dateStr, startTime: "", endTime: "" });
-
+        if (dayName !== "Sunday" && (dayName !== "Saturday" || data.isSat)) {
+          generatedDates.push({ date: dateStr, day: dayName });
+          savedTimesInit.push({
+            date: dateStr,
+            startTime: "",
+            endTime: "",
+            extraTime: "0",
+          });
+        }
         currentDate.setDate(currentDate.getDate() + 1);
       }
+
       setDates(generatedDates);
       setSavedTimes(savedTimesInit);
+      console.log("Generated Dates:", generatedDates);
+      console.log("Saved Times:", savedTimesInit);
     }
   }, [data]);
+
+
+  
 
   useEffect(() => {
     calculateTotalTime(timeEntries);
   }, [timeEntries]);
 
   const handleInputChange = (value, dayIndex, field) => {
+    // Ensure the entry at dayIndex exists
     const updatedEntries = [...timeEntries];
+    if (!updatedEntries[dayIndex]) {
+      updatedEntries[dayIndex] = {};
+    }
     updatedEntries[dayIndex][field] = value;
     setTimeEntries(updatedEntries);
 
-    // Update savedTimes
-    const updatedSavedTimes = [...savedTimes];
-    updatedSavedTimes[dayIndex] = {
-      ...updatedSavedTimes[dayIndex],
-      [field]: value,
-    };
+    const updatedSavedTimes = savedTimes.map((entry, idx) =>
+      idx === dayIndex ? { ...entry, [field]: value } : entry
+    );
     setSavedTimes(updatedSavedTimes);
 
-    // Recalculate total time after change
     calculateTotalTime(updatedEntries);
   };
+
 
   const calculateTotalTime = (entries) => {
     let totalMinutes = 0;
 
     entries.forEach(({ startTime, endTime, extraTime }) => {
       if (startTime && endTime) {
-        //console.log(`Start Time: ${startTime}, End Time: ${endTime}`);
+        //console.log(Start Time: ${startTime}, End Time: ${endTime});
 
         // Parse times
         const [startHours, startMinutes, startPeriod] = parseTime(startTime);
         const [endHours, endMinutes, endPeriod] = parseTime(endTime);
 
-        //console.log(`Parsed Start Time: ${startHours}:${startMinutes} ${startPeriod}`);
-        //console.log(`Parsed End Time: ${endHours}:${endMinutes} ${endPeriod}`);
+        //console.log(Parsed Start Time: ${startHours}:${startMinutes} ${startPeriod});
+        //console.log(Parsed End Time: ${endHours}:${endMinutes} ${endPeriod});
 
         // Convert to 24-hour format
         const start24Hour = convertTo24Hour(startHours, startPeriod);
         const end24Hour = convertTo24Hour(endHours, endPeriod);
 
-        //console.log(`Start in 24-Hour: ${start24Hour}, End in 24-Hour: ${end24Hour}` );
+        //console.log(Start in 24-Hour: ${start24Hour}, End in 24-Hour: ${end24Hour} );
 
         const startMinutesFromMidnight = start24Hour * 60 + startMinutes;
         const endMinutesFromMidnight = end24Hour * 60 + endMinutes;
 
-        //console.log(`Minutes from Midnight (Start): ${startMinutesFromMidnight}, (End): ${endMinutesFromMidnight}` );
+        //console.log(Minutes from Midnight (Start): ${startMinutesFromMidnight}, (End): ${endMinutesFromMidnight} );
 
         let diff;
         if (endMinutesFromMidnight >= startMinutesFromMidnight) {
@@ -130,17 +141,17 @@ function EditPage() {
           diff = 1440 - startMinutesFromMidnight + endMinutesFromMidnight;
         }
 
-        //console.log(`Difference in Minutes: ${diff}`);
+        //console.log(Difference in Minutes: ${diff});
 
         // Adjust total minutes
         totalMinutes += diff - (parseInt(extraTime, 10) || 0);
-        //console.log(`Total Minutes After Adjustment: ${totalMinutes}`);
+        //console.log(Total Minutes After Adjustment: ${totalMinutes});
       }
     });
 
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
-    //console.log(`Total Time: ${hours} hr ${minutes} min`);
+    //console.log(Total Time: ${hours} hr ${minutes} min);
     setTotalTime(`${hours} hr ${minutes} min`);
   };
 
@@ -162,17 +173,14 @@ function EditPage() {
   };
 
   const handleSave = () => {
-    //console.log("Saving data...");
-
     if (index === undefined || index < 0) {
       console.error("Index is undefined or invalid.");
       return;
     }
 
-    const formattedTimeEntries = timeEntries.map((entry, idx) => ({
-      ...entry,
-      startTime: savedTimes[idx]?.startTime || entry.startTime,
-      endTime: savedTimes[idx]?.endTime || entry.endTime,
+    const formattedTimeEntries = dates.map((date, idx) => ({
+      ...savedTimes[idx],
+      date: date.date,
     }));
 
     localStorage.setItem(
@@ -200,6 +208,8 @@ function EditPage() {
       console.error("dataList is not an array:", dataList);
     }
   };
+
+
 
   const handleback = () => {
     navigate("/store");
@@ -366,14 +376,14 @@ function EditPage() {
                   </div>
 
                   <div className="">
-                    <p className="text-md indent-3">
+                    <p className="text-lg indent-3">
                       {dates[index]?.date} ({dates[index]?.day})
                     </p>
-                    <p className="text-md indent-5">
+                    <p className="text-lg indent-3">
                       {" "}
                       {savedTimes[index]?.startTime || "Not Set"}
                     </p>
-                    <p className="text-md indent-5">
+                    <p className="text-lg indent-3">
                       {savedTimes[index]?.endTime || "Not Set"}
                     </p>
                     <br />
