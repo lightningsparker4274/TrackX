@@ -89,7 +89,7 @@ function MasterPage() {
       />
       <div className="max-w-md p-3 mx-auto text-white bg-white border rounded-b-lg shadow-md lg:rounded-r-xl lg:mt-3 lg:rounded-tl-sm lg:rounded-bl-sm lg:h-[490px] h-[550px] overflow-auto">
         <h2 className="mb-4 text-2xl font-bold text-center text-gray-800 mx-[60px]">
-          TrackX Task Manager
+          TrackX Task Manager😊
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4 text-black">
           <div className="mb-4">
@@ -145,6 +145,7 @@ function MasterPage() {
               className="p-1 border border-gray-300 rounded-md focus:ring-2 focus: ring-sky-300"
               rows={4}
               cols={33}
+              placeholder="Enter your description here.....☺️",
               value={formData.description}
               onChange={handleInputChange}
               name="description"
