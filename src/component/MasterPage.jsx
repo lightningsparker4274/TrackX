@@ -15,6 +15,7 @@ function MasterPage() {
     startDate: "",
     endDate: "",
     isSat: "",
+    isNew:true,
     description:"",
     totaltime: "",
   });
