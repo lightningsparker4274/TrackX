@@ -112,8 +112,8 @@ function StorePage() {
               </div>
               <div className="flex justify-between mx-auto mt-4">
                 <div className="grid grid-cols-2 gap-2">
-                  <strong>Start Date:</strong> {item.startDate || "N/A"}
-                  <strong>End Date:</strong> {item.endDate || "N/A"}
+                  <strong>SDate:</strong> {item.startDate || "N/A"}
+                  <strong>EDate:</strong> {item.endDate || "N/A"}
                   <strong>Total Time:</strong> {item.totalTime || 0}
                   <strong>Sat work:</strong> {item.isSat ? "Yes" : "No"}
                   <strong>Total Days:</strong> <span>{totalDays}</span>
@@ -133,7 +133,7 @@ function StorePage() {
                       <Delete />
                     </button>
                   </div>
-                  <div className="flex items-center justify-center mt-4 border-4 border-yellow-300 rounded-full h-[100px] w-[100px] sm:mt-0">
+                  <div className="flex items-center justify-center mt-4 border-4 border-yellow-300 rounded-full h-[800px] w-[80px] sm:mt-0">
                     <p className="text-5xl">{totalDays}</p><span className="font-semibold">days</span>
                   </div>
                 </div>
