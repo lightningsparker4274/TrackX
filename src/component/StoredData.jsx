@@ -82,7 +82,7 @@ function StorePage() {
       {/* Search Input */}
       <input
         type="text"
-        placeholder="Search by file name..."
+        placeholder="Search by file name...🙂"
         value={searchQuery}
         onChange={handleSearchChange}
         className="w-full p-2 mt-3 mb-5 border border-gray-300 rounded focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
