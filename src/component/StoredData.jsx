@@ -100,28 +100,41 @@ function StorePage() {
           return (
             <div
               key={index}
-              className="flex p-3 mb-4 bg-white border-2 rounded-lg shadow-lg hover:odd:border-green-300 hover:even:border-purple-300 hover: sm:flex-row"
+              className="p-3 mb-4 bg-white border-2 rounded-lg shadow-lg hover:odd:border-green-300 hover:even:border-purple-300 hover: sm:flex-row"
             >
-              <div className="grid grid-cols-2 gap-2">
-                <strong className="mr-1 text-lg">File:</strong>
-                <span className="text-lg">{item.name || "N/A"}</span>
-                <strong>Start Date:</strong> {item.startDate || "N/A"}
-                <strong>End Date:</strong> {item.endDate || "N/A"}
-                <strong>Total Time:</strong> {item.totalTime || 0}
-                <strong>Sat work:</strong> {item.isSat ? "Yes" : "No"}
-                <strong>Total Days:</strong> <span>{totalDays}</span>
+              <div className="flex p-2 border rounded-lg odd:border-green-400 even:border-purple-300">
+                {/* <strong className="mr-1 text-lg">File Name:</strong> */}
+                <File />
+                <span className="text-xl font-bold indent-4">
+                  {item.name || "N/A"}
+                </span>
               </div>
-              <div className="items-center justify-between mt-4 sm:mt-0 sm:flex-row sm:mx-auto">
-                <div className="flex justify-center mb-3 space-x-2">
-                  <button onClick={() => handleEdit(index)}>
-                    <Edit />
-                  </button>
-                  <button onClick={() => handleDelete(index)}>
-                    <Delete />
-                  </button>
+              <div className="flex justify-between mx-auto mt-4">
+                <div className="grid grid-cols-2 gap-2">
+                  <strong>Start Date:</strong> {item.startDate || "N/A"}
+                  <strong>End Date:</strong> {item.endDate || "N/A"}
+                  <strong>Total Time:</strong> {item.totalTime || 0}
+                  <strong>Sat work:</strong> {item.isSat ? "Yes" : "No"}
+                  <strong>Total Days:</strong> <span>{totalDays}</span>
                 </div>
-                <div className="flex items-center justify-center mt-4 border-4 border-yellow-300 rounded-full h-[130px] w-[130px] sm:mt-0">
-                  <p className="text-5xl">{totalDays}</p>
+                <div className="flex-col mx-5 mt-4 sm:mt-0 sm:flex-row sm:mx-auto">
+                  <div className="flex items-start justify-center space-x-5 item">
+                    <button
+                      className="p-2 border border-black rounded-full hover:bg-green-300"
+                      onClick={() => handleEdit(index)}
+                    >
+                      <Edit />
+                    </button>
+                    <button
+                      className="p-2 border border-black rounded-full hover:bg-red-300"
+                      onClick={() => handleDelete(index)}
+                    >
+                      <Delete />
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-center mt-4 border-4 border-yellow-300 rounded-full h-[130px] w-[130px] sm:mt-0">
+                    <p className="text-5xl">{totalDays}</p><span className="font-semibold">days</span>
+                  </div>
                 </div>
               </div>
             </div>
