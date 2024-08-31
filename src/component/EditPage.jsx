@@ -41,7 +41,15 @@ function EditPage() {
     }
   }, [data, index, dates]);
 
-
+  useEffect(() => {
+     // Check if there's existing data for this file index
+     if (data.isNew) {
+       // Only execute if no existing data is found
+       localStorage.removeItem(`timeEntries_${index}`);
+       setSavedTimes([]);
+       setTimeEntries([]);
+     }
+   }, [index]);
 
   useEffect(() => {
     if (data && data.startDate && data.endDate) {
@@ -192,6 +200,7 @@ function EditPage() {
     if (Array.isArray(dataList)) {
       updatedDataList[index] = {
         ...formData,
+        isNew: false,
         timeEntries: formattedTimeEntries,
         totalTime,
       };
