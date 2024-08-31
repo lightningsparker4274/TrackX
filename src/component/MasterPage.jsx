@@ -15,8 +15,8 @@ function MasterPage() {
     startDate: "",
     endDate: "",
     isSat: "",
-    isNew:true,
-    description:"",
+    isNew: true,
+    description: "",
     totaltime: "",
   });
 
@@ -47,7 +47,6 @@ function MasterPage() {
     }
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedDataList = [...dataList, formData];
@@ -72,7 +71,7 @@ function MasterPage() {
       startDate: "",
       endDate: "",
       isSat: "",
-      description:"",
+      description: "",
       totaltime: "",
     });
   };
@@ -90,7 +89,7 @@ function MasterPage() {
       />
       <div className="max-w-md p-3 mx-auto text-white bg-white border rounded-b-lg shadow-md lg:rounded-r-xl lg:mt-3 lg:rounded-tl-sm lg:rounded-bl-sm lg:h-[490px] h-[550px] overflow-auto">
         <h2 className="mb-4 text-2xl font-bold text-center text-gray-800 mx-[60px]">
-          TrackX Task Manager😊
+          TrackX Task Manager
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4 text-black">
           <div className="mb-4">
@@ -128,7 +127,7 @@ function MasterPage() {
               className="w-full p-2 border rounded focus:ring-2 focus: ring-sky-300"
             />
           </div>
-          <div className="flex items-center justify-between w-64 mb-4">
+          <div className="flex items-center justify-between mb-4 w-60">
             <input
               type="checkbox"
               onChange={handleInputChange}
@@ -144,9 +143,8 @@ function MasterPage() {
             <label className="block mb-2 text-gray-700">File Description</label>
             <textarea
               className="p-1 border border-gray-300 rounded-md focus:ring-2 focus: ring-sky-300"
-              placeholder="Enter Your File Description here.....☺️"
               rows={4}
-              cols={33}
+              cols={46}
               value={formData.description}
               onChange={handleInputChange}
               name="description"
