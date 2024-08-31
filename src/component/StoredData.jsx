@@ -133,7 +133,7 @@ function StorePage() {
                       <Delete />
                     </button>
                   </div>
-                  <div className="flex items-center justify-center mt-4 border-4 border-yellow-300 rounded-full h-[130px] w-[130px] sm:mt-0">
+                  <div className="flex items-center justify-center mt-4 border-4 border-yellow-300 rounded-full h-[100px] w-[100px] sm:mt-0">
                     <p className="text-5xl">{totalDays}</p><span className="font-semibold">days</span>
                   </div>
                 </div>
