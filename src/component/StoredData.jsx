@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import localforage from "localforage";
-import { Delete, Edit } from "@mui/icons-material";
+//import { Delete, Edit } from "@mui/icons-material";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import File from "./icons/File";
+import Delete from "./icons/Delete";
+import Edit from "./icons/Edit";
 function StorePage() {
   const navigate = useNavigate();
   const [dataList, setDataList] = useState([]);
@@ -30,7 +32,6 @@ function StorePage() {
 
   const handleDelete = (index) => {
     var isok = prompt("type ok delete...");
-    //console.log(isok);
     if (isok) {
       const updatedDataList = dataList.filter((_, i) => i !== index);
       setDataList(updatedDataList);
@@ -81,7 +82,7 @@ function StorePage() {
       {/* Search Input */}
       <input
         type="text"
-        placeholder="Search by file name...😉"
+        placeholder="Search by file name..."
         value={searchQuery}
         onChange={handleSearchChange}
         className="w-full p-2 mt-3 mb-5 border border-gray-300 rounded focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
