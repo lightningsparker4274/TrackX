@@ -127,7 +127,7 @@ function MasterPage() {
               className="w-full p-2 border rounded focus:ring-2 focus: ring-sky-300"
             />
           </div>
-          <div className="flex items-center justify-between mb-4 w-60">
+          <div className="flex items-center justify-between mb-4 w-64">
             <input
               type="checkbox"
               onChange={handleInputChange}
@@ -144,7 +144,7 @@ function MasterPage() {
             <textarea
               className="p-1 border border-gray-300 rounded-md focus:ring-2 focus: ring-sky-300"
               rows={4}
-              cols={46}
+              cols={33}
               value={formData.description}
               onChange={handleInputChange}
               name="description"
