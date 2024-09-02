@@ -106,7 +106,7 @@ function StorePage() {
               <div className="flex p-2 border rounded-lg odd:border-green-400 even:border-purple-300 item-center">
                 {/* <strong className="mr-1 text-lg">File Name:</strong> */}
                 <File />
-                <span className="text-xl font-bold indent-4 overflow-hidden">
+                <span className="text-xl font-bold indent-4 text-ellipsis overflow-hidden">
                   {item.name || "N/A"}
                 </span>
               </div>
