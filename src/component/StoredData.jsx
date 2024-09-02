@@ -101,9 +101,9 @@ function StorePage() {
           return (
             <div
               key={index}
-              className="p-2 mb-4 bg-white border-2 rounded-lg shadow-lg hover:odd:border-green-300 hover:even:border-purple-300 hover: sm:flex-row"
+              className="w-2/4 p-2 mb-4 bg-white border-2 rounded-lg shadow-lg hover:odd:border-green-300 hover:even:border-purple-300 hover: sm:flex-row"
             >
-              <div className="flex p-2 border rounded-lg odd:border-green-400 even:border-purple-300 item-center w-full">
+              <div className="flex p-2 border rounded-lg odd:border-green-400 even:border-purple-300 item-center">
                 {/* <strong className="mr-1 text-lg">File Name:</strong> */}
                 <File />
                 <span className="text-xl font-bold indent-4 text-ellipsis overflow-hidden">
