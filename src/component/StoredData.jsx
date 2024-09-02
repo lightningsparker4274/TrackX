@@ -82,7 +82,7 @@ function StorePage() {
       {/* Search Input */}
       <input
         type="text"
-        placeholder="Search by file name...🙂"
+        placeholder="Search by file name...😉"
         value={searchQuery}
         onChange={handleSearchChange}
         className="w-full p-2 mt-3 mb-5 border border-gray-300 rounded focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
@@ -106,7 +106,7 @@ function StorePage() {
               <div className="flex p-2 border rounded-lg odd:border-green-400 even:border-purple-300 item-center">
                 {/* <strong className="mr-1 text-lg">File Name:</strong> */}
                 <File />
-                <span className="text-xl font-bold indent-4">
+                <span className="text-xl font-bold indent-4 overflow-hidden">
                   {item.name || "N/A"}
                 </span>
               </div>
