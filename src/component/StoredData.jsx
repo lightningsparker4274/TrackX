@@ -113,7 +113,7 @@ function StorePage() {
               <div className="flex justify-between mx-auto mt-4">
                 <div className="grid grid-cols-2 gap-2">
                   <strong>Start Date:</strong> {item.startDate || "N/A"}
-                  <strong>End Date:</strong> {item.endDate || "N/A"}
+                  <strong>End Date:</strong> {item.endDate || "0"}
                   <strong>Total Time:</strong> {item.totalTime || 0}
                   <strong>Sat work:</strong> {item.isSat ? "Yes" : "No"}
                   <strong>Total Days:</strong> <span>{totalDays}</span>
